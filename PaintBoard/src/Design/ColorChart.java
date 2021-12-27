@@ -17,7 +17,7 @@ public class ColorChart extends JFrame {
 	Main main = new Main();
 	
 	public ColorChart() {
-		setName("»ö»óÇ¥");
+		setName("Color");
 		setBounds(100, 100, 450, 300);
 		
 		final JColorChooser chooser = new JColorChooser();
@@ -26,15 +26,15 @@ public class ColorChart extends JFrame {
 		ChangeListener listener = new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				newForegroundColor = chooser.getColor();
-				System.out.println("new = " + newForegroundColor);
-				main.getWindow1().getDi().setColor(newForegroundColor);
+				main.getWindow1().setNew_color(newForegroundColor);
 			}
 		};
 		
 		model.addChangeListener(listener);
 		add(chooser);
-		main.getWindow1().getDi().setColor(newForegroundColor);
+		main.getWindow1().setNew_color(newForegroundColor);
 		pack();
+		
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				dispose();

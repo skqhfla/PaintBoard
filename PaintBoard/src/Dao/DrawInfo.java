@@ -1,22 +1,25 @@
 package Dao;
 
 import java.awt.Color;
+import java.awt.Stroke;
 import java.io.Serializable;
 
-public class DrawInfo implements Serializable{
-	private int x,y,x1,y1;
+public class DrawInfo implements Serializable {
+	private int x, y, x1, y1;
+	private int thick;
 	private int type;
 	private Color color;
 	private boolean fill;
-	
+
 	public DrawInfo() {
 	}
 
-	public DrawInfo(int x, int y, int x1, int y1, int type, Color color, boolean fill) {
+	public DrawInfo(int x, int y, int x1, int y1, int thick, int type, Color color, boolean fill) {
 		this.x = x;
 		this.y = y;
 		this.x1 = x1;
 		this.y1 = y1;
+		this.thick = thick;
 		this.type = type;
 		this.color = color;
 		this.fill = fill;
@@ -54,6 +57,14 @@ public class DrawInfo implements Serializable{
 		this.y1 = y1;
 	}
 
+	public int getThick() {
+		return thick;
+	}
+
+	public void setThick(int thick) {
+		this.thick = thick;
+	}
+
 	public int getType() {
 		return type;
 	}
@@ -77,6 +88,4 @@ public class DrawInfo implements Serializable{
 	public void setFill(boolean fill) {
 		this.fill = fill;
 	}
-
 }
-
