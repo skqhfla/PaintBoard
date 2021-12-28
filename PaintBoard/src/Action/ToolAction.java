@@ -21,23 +21,23 @@ public class ToolAction implements ActionListener, ItemListener {
 
 	private void tryingCorrectNumberFormats(ActionEvent e) {
 		if (e.getActionCommand().equals("PEN")) {
-			main.getWindow1().setDist(0);
+			main.getWindow1().getDao().setType(0);
 		} else if (e.getActionCommand().equals("LINE")) {
-			main.getWindow1().setDist(1);
+			main.getWindow1().getDao().setType(1);
 		} else if (e.getActionCommand().equals("RECT")) {
-			main.getWindow1().setDist(2);
+			main.getWindow1().getDao().setType(2);
 		} else if (e.getActionCommand().equals("CIRCLE")) {
-			main.getWindow1().setDist(3);
+			main.getWindow1().getDao().setType(3);
 		} else if (e.getActionCommand().equals("COLOR")) {
 			ColorChart chart = new ColorChart();
 			chart.setVisible(true);
 		} else if (e.getActionCommand().equals("TRIANGLE")) {
-			main.getWindow1().setDist(4);
-		} else if (e.getActionCommand().equals("POLY")) {
-			main.getWindow1().setDist(5);
+			main.getWindow1().getDao().setType(4);
+		} else if (e.getActionCommand().equals("STAR")) {
+			main.getWindow1().getDao().setType(5);
 		} 
 		
-		System.out.println("dist = " + main.getWindow1().getDist());
+		System.out.println("dist = " + main.getWindow1().getDao().getType());
 	}
 	
 	@Override

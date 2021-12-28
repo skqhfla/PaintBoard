@@ -66,7 +66,8 @@ public class MenuAction implements ActionListener {
 			main.getWindow1().getUndo().clear();
 			main.getWindow1().getBefore().clear();
 			main.getWindow1().getAfter().clear();
-			main.getWindow1().setDist(0);
+			main.getWindow1().getDao().setType(0);
+			main.getWindow1().setIndex(0);
 			main.getWindow1().repaint();
 			System.out.println("reset");
 		} else if (e.getActionCommand().equals("UP")) {
@@ -81,24 +82,26 @@ public class MenuAction implements ActionListener {
 				main.getWindow1().getDao().setThick(main.getWindow1().getDao().getThick() - 5);
 		} else if (e.getActionCommand().equals("ERASER")) {
 			main.getWindow1().getDao().setThick(1);
-			main.getWindow1().setDist(0);
+			main.getWindow1().getDao().setType(0);
 			main.getWindow1().getDao().setThick(main.getWindow1().getDao().getThick());
 			main.getWindow1().setNew_color(new Color(255, 255, 255));
 		} else if (e.getActionCommand().equals("UNDO")) {
 			System.out.println("before size = " + main.getWindow1().getVc().size());
-
-			for (int i = 0; i < main.getWindow1().getAfter().get(main.getWindow1().getAfter().size()-1) - main.getWindow1().getBefore().get(main.getWindow1().getBefore().size()-1); i++) {
+			int size = main.getWindow1().getAfter().get(main.getWindow1().getAfter().size()-1) - main.getWindow1().getBefore().get(main.getWindow1().getBefore().size()-1);
+			for (int i = 0; i < size; i++) {
 				main.getWindow1().getUndo().add(main.getWindow1().getVc().get(main.getWindow1().getVc().size() - 1));
 				main.getWindow1().getVc().remove(main.getWindow1().getVc().size() - 1);
 			}
-			//main.getWindow1().repaint();
+			main.getWindow1().repaint();
 			System.out.println("after size = " + main.getWindow1().getVc().size());
 		} else if (e.getActionCommand().equals("REDO")) {
-			for (int i = 0; i < main.getWindow1().getUndo().size(); i++) {
+			int size = main.getWindow1().getAfter().get(main.getWindow1().getIndex()-1) - main.getWindow1().getBefore().get(main.getWindow1().getIndex()-1);
+			for (int i = 0; i < size; i++) {
 				main.getWindow1().getVc().add(main.getWindow1().getUndo().get(main.getWindow1().getUndo().size() - 1));
 				main.getWindow1().getUndo().remove(main.getWindow1().getUndo().size() - 1);
 			}
-			//main.getWindow1().repaint();
+			main.getWindow1().setIndex(main.getWindow1().getIndex()-1);
+			main.getWindow1().repaint();
 		}
 	}
 

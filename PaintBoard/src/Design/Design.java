@@ -30,7 +30,7 @@ public class Design extends Frame {
 	private Menu Menu_Tool = new Menu("FIGURE");
 	private MenuItem Item_pen = new MenuItem("PEN");
 	private MenuItem Item_line = new MenuItem("LINE");
-	private MenuItem Item_poly = new MenuItem("POLY");
+	private MenuItem Item_star = new MenuItem("STAR");
 	private MenuItem Item_triangle = new MenuItem("TRIANGLE");
 	private MenuItem Item_square = new MenuItem("RECT");
 	private MenuItem Item_circle = new MenuItem("CIRCLE");
@@ -48,14 +48,21 @@ public class Design extends Frame {
 	private MenuItem Item_eraser = new MenuItem("ERASER");
 	private CheckboxMenuItem Item_fill = new CheckboxMenuItem("FILL");
 
-	private int dist;
-
 	private Color new_color;
 
 	private ArrayList<DrawInfo> vc = new ArrayList<>();
 	private ArrayList<DrawInfo> undo = new ArrayList<>();
 	private ArrayList<Integer> before = new ArrayList<>();
 	private ArrayList<Integer> after = new ArrayList<>();
+	private int index;
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
 
 	public DrawInfo getDao() {
 		return dao;
@@ -63,14 +70,6 @@ public class Design extends Frame {
 
 	public void setDao(DrawInfo dao) {
 		this.dao = dao;
-	}
-	
-	public int getDist() {
-		return dist;
-	}
-
-	public void setDist(int dist) {
-		this.dist = dist;
 	}
 
 	public Color getNew_color() {
@@ -96,11 +95,11 @@ public class Design extends Frame {
 	public void setVc(ArrayList<DrawInfo> vc) {
 		this.vc = vc;
 	}
-	
+
 	public ArrayList<DrawInfo> getUndo() {
 		return undo;
 	}
-	
+
 	public ArrayList<Integer> getBefore() {
 		return before;
 	}
@@ -120,7 +119,7 @@ public class Design extends Frame {
 	public void setUndo(ArrayList<DrawInfo> undo) {
 		this.undo = undo;
 	}
-
+	
 	public Design() {
 		super("Paint Board");
 		init();
@@ -139,7 +138,7 @@ public class Design extends Frame {
 		mb.add(Menu_Tool);
 		Menu_Tool.add(Item_pen);
 		Menu_Tool.add(Item_line);
-		Menu_Tool.add(Item_poly);
+		Menu_Tool.add(Item_star);
 		Menu_Tool.add(Item_square);
 		Menu_Tool.add(Item_circle);
 		Menu_Tool.add(Item_triangle);
@@ -170,7 +169,7 @@ public class Design extends Frame {
 
 		Item_pen.addActionListener(new ToolAction());
 		Item_line.addActionListener(new ToolAction());
-		Item_poly.addActionListener(new ToolAction());
+		Item_star.addActionListener(new ToolAction());
 		Item_square.addActionListener(new ToolAction());
 		Item_circle.addActionListener(new ToolAction());
 		Item_triangle.addActionListener(new ToolAction());
@@ -181,7 +180,7 @@ public class Design extends Frame {
 		Item_text.addActionListener(new MenuAction());
 		Item_undo.addActionListener(new MenuAction());
 		Item_redo.addActionListener(new MenuAction());
-		
+
 		Item_new.addActionListener(new MenuAction());
 		Item_load.addActionListener(new MenuAction());
 		Item_save.addActionListener(new MenuAction());
@@ -196,27 +195,35 @@ public class Design extends Frame {
 		Color c = dao.getColor();
 		g2.setColor(c);
 		g2.setStroke(new BasicStroke(dao.getThick()));
-		if (dist == 1) {
+		if (dao.getType() == 1) {
 			g2.drawLine(dao.getX(), dao.getY(), dao.getX1(), dao.getY1());
-		} else if (dist == 2) {
+		} else if (dao.getType() == 2) {
 			if (dao.isFill()) {
 				g2.fillRect(dao.getX(), dao.getY(), dao.getX1() - dao.getX(), dao.getY1() - dao.getY());
 			} else {
 				g2.drawRect(dao.getX(), dao.getY(), dao.getX1() - dao.getX(), dao.getY1() - dao.getY());
 			}
-		} else if (dist == 3) {
+		} else if (dao.getType() == 3) {
 			if (dao.isFill()) {
 				g2.fillOval(dao.getX(), dao.getY(), dao.getX1() - dao.getX(), dao.getY1() - dao.getY());
 			} else {
 				g2.drawOval(dao.getX(), dao.getY(), dao.getX1() - dao.getX(), dao.getY1() - dao.getY());
 			}
-		} else if (dist == 4) {
-			int[] x_points = { dao.getX1() - dao.getX(), dao.getX(), dao.getX1() + dao.getX() };
-			int[] y_points = { dao.getY1() + dao.getY(), dao.getY(), dao.getY1() + dao.getY() };
+		} else if (dao.getType() == 4) {
+			int[] x_points = { dao.getX1(), (dao.getX1() + dao.getX())/2, dao.getX()};
+			int[] y_points = { dao.getY(), (dao.getY1() + dao.getY())/2, dao.getY()};
 			if (dao.isFill()) {
-				g.drawPolygon(x_points, y_points, x_points.length);
+				g2.fillPolygon(x_points, y_points, 3);
 			} else {
-				g.fillPolygon(x_points, y_points, x_points.length);
+				g2.drawPolygon(x_points, y_points, 3);
+			}
+		} else if (dao.getType() == 5) {
+			int[] x_points = {dao.getX(), dao.getX1() - 210, dao.getX1() - 250, dao.getX1() - 150, dao.getX1() - 50, dao.getX1() - 90, dao.getX1(), dao.getX1() - 115, dao.getX1() - 150, dao.getX1() - 190, dao.getX()};
+			int[] y_points = {dao.getY(), dao.getY1() + 95, dao.getY1() + 180, dao.getY1() + 110, dao.getY1() + 180, dao.getY1() + 65, dao.getY(), dao.getY(), dao.getY1() - 100, dao.getY(), dao.getY()};
+			if (dao.isFill()) {
+				g2.fillPolygon(x_points, y_points, 10);
+			} else {
+				g2.drawPolygon(x_points, y_points, 10);
 			}
 		}
 
@@ -239,12 +246,20 @@ public class Design extends Frame {
 					g2.drawOval(imsi.getX(), imsi.getY(), imsi.getX1() - imsi.getX(), imsi.getY1() - imsi.getY());
 				}
 			} else if (imsi.getType() == 4) {
-				int[] x_points = { imsi.getX1() - imsi.getX(), imsi.getX(), imsi.getX1() + imsi.getX() };
-				int[] y_points = { imsi.getY1() + imsi.getY(), imsi.getY(), imsi.getY1() + imsi.getY() };
+				int[] x_points = { imsi.getX1(), (imsi.getX1() + imsi.getX())/2, imsi.getX()};
+				int[] y_points = { imsi.getY(), (imsi.getY1() + imsi.getY())/2, imsi.getY()};
 				if (imsi.isFill()) {
-					g.drawPolygon(x_points, y_points, x_points.length);
+					g2.fillPolygon(x_points, y_points, 3);
 				} else {
-					g.fillPolygon(x_points, y_points, x_points.length);
+					g2.drawPolygon(x_points, y_points, 3);
+				}
+			} else if (imsi.getType() == 5) {
+				int[] x_points = {imsi.getX(), imsi.getX1() - 210, imsi.getX1() - 250, imsi.getX1() - 150, imsi.getX1() - 50, imsi.getX1() - 90, imsi.getX1(), imsi.getX1() - 115, imsi.getX1() - 150, imsi.getX1() - 190, imsi.getX()};
+				int[] y_points = {imsi.getY(), imsi.getY1() + 95, imsi.getY1() + 180, imsi.getY1() + 110, imsi.getY1() + 180, imsi.getY1() + 65, imsi.getY(), imsi.getY(), imsi.getY1() - 100, imsi.getY(), imsi.getY()};
+				if (imsi.isFill()) {
+					g2.fillPolygon(x_points, y_points, 10);
+				} else {
+					g2.drawPolygon(x_points, y_points, 10);
 				}
 			}
 		}

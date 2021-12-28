@@ -16,9 +16,9 @@ public class MouseAction implements MouseListener, MouseMotionListener{
 		main.getWindow1().getDao().setX1(e.getX());
 		main.getWindow1().getDao().setY1(e.getY());
 
-		if (main.getWindow1().getDist() == 0) {
+		if (main.getWindow1().getDao().getType() == 0) {
 			Color c = main.getWindow1().getNew_color();
-			DrawInfo di = new DrawInfo(main.getWindow1().getDao().getX(), main.getWindow1().getDao().getY(), main.getWindow1().getDao().getX1(), main.getWindow1().getDao().getY1(), main.getWindow1().getDao().getThick(), main.getWindow1().getDist(), c, main.getWindow1().getDao().isFill());
+			DrawInfo di = new DrawInfo(main.getWindow1().getDao().getX(), main.getWindow1().getDao().getY(), main.getWindow1().getDao().getX1(), main.getWindow1().getDao().getY1(), main.getWindow1().getDao().getThick(), main.getWindow1().getDao().getType(), c, main.getWindow1().getDao().isFill());
 			main.getWindow1().getVc().add(di);
 			main.getWindow1().getDao().setX(main.getWindow1().getDao().getX1());
 			main.getWindow1().getDao().setY(main.getWindow1().getDao().getY1());
@@ -47,6 +47,7 @@ public class MouseAction implements MouseListener, MouseMotionListener{
 		main.getWindow1().getDao().setX(e.getX());
 		main.getWindow1().getDao().setY(e.getY());
 		main.getWindow1().getBefore().add(main.getWindow1().getVc().size());
+		main.getWindow1().setIndex(main.getWindow1().getIndex()+1);
 	}
 
 	@Override
@@ -54,7 +55,7 @@ public class MouseAction implements MouseListener, MouseMotionListener{
 		main.getWindow1().getDao().setX1(e.getX());
 		main.getWindow1().getDao().setY1(e.getY());
 		Color c = main.getWindow1().getNew_color();
-		DrawInfo di = new DrawInfo(main.getWindow1().getDao().getX(), main.getWindow1().getDao().getY(), main.getWindow1().getDao().getX1(), main.getWindow1().getDao().getY1(), main.getWindow1().getDao().getThick(), main.getWindow1().getDist(), c, main.getWindow1().getDao().isFill());
+		DrawInfo di = new DrawInfo(main.getWindow1().getDao().getX(), main.getWindow1().getDao().getY(), main.getWindow1().getDao().getX1(), main.getWindow1().getDao().getY1(), main.getWindow1().getDao().getThick(), main.getWindow1().getDao().getType(), c, main.getWindow1().getDao().isFill());
 		main.getWindow1().getVc().add(di);
 		main.getWindow1().getAfter().add(main.getWindow1().getVc().size());
 		main.getWindow1().repaint();
